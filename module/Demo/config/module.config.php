@@ -12,6 +12,18 @@ return array(
 						'action' => 'index',
 					),
 				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'view-helper' => array(
+						'type' => 'Literal',
+						'options' => array(
+							'route' => '/view-helper',
+							'defaults' => array(
+								'action' => 'view-helper'
+							),
+						),
+					),
+				),
 			),
 		),
 	),

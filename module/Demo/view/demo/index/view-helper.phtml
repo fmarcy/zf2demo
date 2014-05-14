@@ -1,0 +1,54 @@
+<h1>Custom View Helper</h1>
+
+<h2>Appel direct</h2>
+<p><?php highlight_string('<?php echo $this->siren("879888765") ?>') ?></p>
+<p><?php echo $this->siren('879888765') ?></p>
+
+<hr />
+
+<h2>Appel d'une autre méthode</h2>
+<p><?php highlight_string('<?php echo $this->siren()->formControlStatic("879888765") ?>') ?></p>
+<form action="#" method="post" class="form-horizontal" role="form">
+	<?php echo $this->siren()->formControlStatic('879888765') ?>
+  	<div class="form-group">
+    	<label for="raison-sociale" class="col-sm-2 control-label">Raison sociale :</label>
+    	<div class="col-sm-4">
+      		<input type="text" class="form-control" id="raison-sociale" placeholder="Nom de la société">
+    	</div>
+  	</div>
+  
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-4">
+ 			<button type="button" class="btn btn-primary">Enregistrer</button>
+ 		</div>
+  	</div>
+</form>
+
+<hr />
+
+<h2>Définition du Siren view helper</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Application/src/Application/ViewHelper/Siren.php') ?>
+</p>
+
+<hr />
+
+<h2>Enregistrement dans la config (module.config.php)</h2>
+<?php 
+	$helperConfig = <<<CONFIG
+...
+'view_helpers' => array(
+	'invokables' => array(
+		'siren' => 'Application\ViewHelper\Siren'
+	),
+ ),
+...
+CONFIG;
+
+	highlight_string($helperConfig);
+?>
+
+<hr />
+
+<h2>Possibilité d'utiliser d'autres view helpers dans un custom view helper</h2>
+<?php highlight_string('<?php $escapedString = $this->getView()->escapeHtml("<b>Escape me !</b>"); ?>'); ?>
