@@ -19,7 +19,16 @@ return array(
 						'options' => array(
 							'route' => '/view-helper',
 							'defaults' => array(
-								'action' => 'view-helper'
+								'action' => 'view-helper',
+							),
+						),
+					),
+					'controller-plugin' => array(
+						'type' => 'Literal',
+						'options' => array(
+							'route' => '/controller-plugin',
+							'defaults' => array(
+								'action' => 'controller-plugin',
 							),
 						),
 					),

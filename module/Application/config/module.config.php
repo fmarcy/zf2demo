@@ -76,6 +76,11 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController'
         ),
     ),
+    'controller_plugins' => array(
+    	'invokables' => array(
+    		'fileType' => 'Application\Controller\Plugin\FileType',
+    	),
+    ),
     'view_helpers' => array(
     	'invokables' => array(
     		'siren' => 'Application\ViewHelper\Siren',

@@ -1,0 +1,51 @@
+<h1>Custom Controller Plugin</h1>
+
+<h2>Utilisation dans un controller</h2>
+<?php 
+	$code = <<<'CODE'
+$docs = array(
+	'/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/public/MyWord.docx' => null,
+	'/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/public/MyPdf.pdf' => null,
+);
+
+foreach ($docs as $key => $val)
+{
+	$docs[$key] = $this->fileType($key);
+}
+
+return compact('docs');
+CODE;
+	
+	highlight_string($code);
+	
+	\Zend\Debug\Debug::dump($docs, 'array $docs :');
+?>
+
+<hr />
+
+<h2>Définition du FileType controller plugin</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Application/src/Application/Controller/Plugin/FileType.php') ?>
+</p>
+
+<hr />
+
+<h2>Enregistrement dans la config (module.config.php)</h2>
+<?php 
+	$pluginConfig = <<<CONFIG
+...
+'controller_plugins' => array(
+	'invokables' => array(
+		'fileType' => 'Application\Controller\Plugin\FileType',
+	),
+),
+...
+CONFIG;
+
+	highlight_string($pluginConfig);
+?>
+
+<hr />
+
+<h2>Possibilité d'utiliser d'autres controller plugins dans un custom controller plugin</h2>
+<?php highlight_string('<?php $this->getController()->redirect()->toRoute(\'home\'); ?>'); ?>
