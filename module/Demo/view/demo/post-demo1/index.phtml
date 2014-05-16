@@ -1,0 +1,155 @@
+<h1>Form Validation 1</h1>
+
+<h2><span class="label label-success">Dans cet exemple on utilise Zend pour tout gérer : le formulaire + la validation du formulaire</span></h2>
+
+<hr />
+
+<?php $form->prepare() ?>
+<?php $form->setAttribute('action', $this->url() )?>
+<?php echo $this->form()->openTag($form) ?>
+
+<div class="form-group">
+	<?php $number = $form->get('number') ?>
+    <?php echo $this->formLabel($number) ?>
+    <div class="col-sm-6">
+    	<?php echo $this->formText($number) ?>
+    	<?php echo $this->formElementErrors($number) ?>
+    </div>
+</div>
+
+<div class="form-group">
+	<?php $csrf = $form->get('csrf') ?>
+    <?php echo $this->formLabel($csrf) ?>
+    <div class="col-sm-6">
+    	<?php echo $this->formText($csrf) ?>
+    	<?php echo $this->formElementErrors($csrf) ?>
+    </div>
+    <div class="col-sm-4">
+      <p class="form-control-static">Changer la valeur pour simuler une attaque CSRF</p>
+	</div>
+</div>
+
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-4">
+		<?php echo $this->formButton($form->get('submit')) ?>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag($form) ?>
+
+<hr />
+
+<h2>Déclaration des dépendances du controller (ici le formulaire)</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Demo/src/Demo/Controller/PostDemo1Controller.php') ?>
+</p>
+
+<hr />
+
+<h2>Injection des dépendances par le service manager via une factory</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Demo/src/Demo/Factory/PostDemo1ControllerFactory.php') ?>
+</p>
+
+<hr />
+
+<h2>Enregistrement de la factory (module.config.php)</h2>
+<?php 
+	$onfig = <<<CONFIG
+...
+// Définition de la route
+'form-validation' => array(
+	'type' => 'Literal',
+	'options' => array(
+		'route' => '/form-validation-1',
+		'defaults' => array(
+			'controller' => 'demo-post-demo1-controller', // id du controller créé par la factory
+			'action' => 'index',
+		),
+	),
+),
+...
+'controllers' => array(
+	'factories' => array(
+		'demo-post-demo1-controller' =>'Demo\Factory\PostDemo1ControllerFactory', // on reprend l'id du controller défini dans la route au-dessus
+	),			
+),
+...
+CONFIG;
+
+	highlight_string($onfig);
+?>
+
+<hr />
+
+<h2><span class="label label-info">Le formulaire est également créé par une factory pour y injecter l'InputFilter pour la validation</span></h2>
+<ul>
+	<li>Même principe qu'avec la factory qui créé le controller => Façon "Best Practice" avec injection des dépendances</li>
+	<li>
+		Mais on peut également setter l'InputFilter directement dans le controller :
+		<?php highlight_string('<?php $this->demoForm->setInputFilter(new Demo\Form\DemoFormFilter); ?>') ?>
+	</li>
+</ul>
+
+<hr />
+
+<h2><span class="label label-info">On peut également mettre directement la définition du InputFilter dans le formulaire ...</span></h2>
+<p> ... Mais c'est plus souple de les séparer, ça rend le InputFilter réutilisable ailleurs, pour valider juste un tableau par exemple</p>
+
+<hr />
+
+<h2>Code du Formulaire</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Demo/src/Demo/Form/DemoForm.php') ?>
+</p>
+
+<hr />
+
+<h2>Code du InputFilter (filtres & validation)</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Demo/src/Demo/Form/DemoFormFilter.php') ?>
+</p>
+
+<hr />
+
+<h2>Code de la view</h2>
+<?php 
+	$viewCode = <<<'VIEW_CODE'
+...
+<?php $form->prepare() ?>
+<?php $form->setAttribute('action', $this->url() )?>
+<?php echo $this->form()->openTag($form) ?>
+
+<div class="form-group">
+	<?php $number = $form->get('number') ?>
+    <?php echo $this->formLabel($number) ?>
+    <div class="col-sm-6">
+    	<?php echo $this->formText($number) ?>
+    	<?php echo $this->formElementErrors($number) ?>
+    </div>
+</div>
+
+<div class="form-group">
+	<?php $csrf = $form->get('csrf') ?>
+    <?php echo $this->formLabel($csrf) ?>
+    <div class="col-sm-6">
+    	<?php echo $this->formText($csrf) ?>
+    	<?php echo $this->formElementErrors($csrf) ?>
+    </div>
+    <div class="col-sm-4">
+      <p class="form-control-static">Changer la valeur pour simuler une attaque CSRF</p>
+	</div>
+</div>
+
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-4">
+		<?php echo $this->formButton($form->get('submit')) ?>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag($form) ?>
+...
+VIEW_CODE;
+
+	highlight_string($viewCode);
+?>

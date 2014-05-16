@@ -30,4 +30,9 @@ class IndexController extends AbstractActionController
 		
 		return compact('docs');
 	}
+	
+	public function formIsValidAction()
+	{
+		
+	}
 }
