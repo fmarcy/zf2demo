@@ -41,12 +41,22 @@ return array(
 							),
 						),		
 					),
-					'form-validation' => array(
+					'form-validation-1' => array(
 						'type' => 'Literal',
 						'options' => array(
 							'route' => '/form-validation-1',
 							'defaults' => array(
 								'controller' => 'demo-post-demo1-controller',
+								'action' => 'index',
+							),
+						),
+					),
+					'form-validation-2' => array(
+						'type' => 'Literal',
+						'options' => array(
+							'route' => '/form-validation-2',
+							'defaults' => array(
+								'controller' => 'demo-post-demo2-controller',
 								'action' => 'index',
 							),
 						),
@@ -59,6 +69,7 @@ return array(
 	'controllers' => array(
 		'invokables' => array(
 			'demo-index-controller' => 'Demo\Controller\IndexController',
+			'demo-post-demo2-controller' => 'Demo\Controller\PostDemo2Controller',
 		),	
 		'factories' => array(
 			'demo-post-demo1-controller' =>'Demo\Factory\PostDemo1ControllerFactory',

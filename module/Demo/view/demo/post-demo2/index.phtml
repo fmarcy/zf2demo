@@ -1,0 +1,72 @@
+<h1>Form Validation 2</h1>
+
+<h2><span class="label label-success">Dans cet exemple on fait plus simple, sans gestion de dépendance et on utilise ZF2 juste pour valider le formulaire.</span></h2>
+
+<hr />
+
+<h2><span class="label label-warning">Pas de protection CSRF dans cet exemple, le token serait à gérer manuellement</span></h2>
+
+<br />
+
+<form method="post" action="/demo/form-validation-2" class="form-horizontal" role="form">
+	<div class="form-group">
+	    <label for="number" class="col-sm-2 control-label">Chiffre :</label>
+	    <div class="col-sm-6">
+	      	<input type="text" class="form-control" name="number" id="number" placeholder="Entier entre 1 et 10" value="<?php echo $data['number'] ?>" />
+	    	<?php if(isset($errors['number'])): ?>
+	    		<ul>
+		    		<?php foreach ($errors['number'] as $error): ?>
+		    			<li><?php echo $error ?></li>
+		    		<?php endforeach ?>
+	    		</ul>
+    		<?php endif ?>
+      	</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-4">
+			<button class="btn btn-primary" value="Valider" name="submit" type="submit">Valider</button>
+	    </div>
+    </div>
+</form>
+
+<hr />
+
+<h2>Code du controller sans gestion des dépendances</h2>
+<p>
+	<?php highlight_file('/Users/freddymarcy/Dev/web/workspaces/dev/zf2demo.dev/module/Demo/src/Demo/Controller/PostDemo2Controller.php') ?>
+</p>
+
+<hr />
+
+<h2>Code de la view</h2>
+<?php 
+	$viewCode = <<<'VIEW_CODE'
+...
+<form method="post" action="/demo/form-validation-2" class="form-horizontal" role="form">
+	<div class="form-group">
+	    <label for="number" class="col-sm-2 control-label">Chiffre :</label>
+	    <div class="col-sm-6">
+	      	<input type="text" class="form-control" name="number" id="number" placeholder="Entier entre 1 et 10" value="<?php echo $data['number'] ?>" />
+	    	<!-- POSSIBILITÉ DE FAIRE UN HELPER POUR AFFICHER LES ERREURS ... -->
+			<?php if(isset($errors['number'])): ?>
+	    		<ul>
+		    		<?php foreach ($errors['number'] as $error): ?>
+		    			<li><?php echo $error ?></li>
+		    		<?php endforeach ?>
+	    		</ul>
+    		<?php endif ?>
+      	</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-4">
+			<button class="btn btn-primary" value="Valider" name="submit" type="submit">Valider</button>
+	    </div>
+    </div>
+</form>
+...
+VIEW_CODE;
+
+	highlight_string($viewCode);
+?>
