@@ -61,6 +61,15 @@ return array(
 							),
 						),
 					),
+					'doc' => array(
+						'type' => 'Literal',
+						'options' => array(
+							'route' => '/liens-doc',
+							'defaults' => array(
+								'action' => 'liens-doc',
+							),
+						),
+					),
 				),
 			),
 		),
