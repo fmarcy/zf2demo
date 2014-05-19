@@ -61,6 +61,26 @@ return array(
 							),
 						),
 					),
+					'tablegateway' => array(
+						'type' => 'Literal',
+						'options' => array(
+							'route' => '/tablegateway',
+							'defaults' => array(
+								'controller' => 'demo-tablegateway-controller',
+								'action' => 'index',
+							),
+						),
+					),
+					'tablegateway-insert-company' => array(
+						'type' => 'Segment',
+						'options' => array(
+							'route' => '/tablegateway/insert-company/:name',
+							'defaults' => array(
+								'controller' => 'demo-tablegateway-controller',
+								'action' => 'insert-company',
+							),
+						),
+					),
 					'doc' => array(
 						'type' => 'Literal',
 						'options' => array(
@@ -82,6 +102,7 @@ return array(
 		),	
 		'factories' => array(
 			'demo-post-demo1-controller' =>'Demo\Factory\PostDemo1ControllerFactory',
+			'demo-tablegateway-controller' => 'Demo\Factory\TableGatewayDemoControllerFactory',
 		),			
 	),
 		
@@ -91,6 +112,7 @@ return array(
 		),
 		'factories' => array(
 			'demo-form' => 'Demo\Factory\DemoFormFactory',
+			'company-table' => 'Demo\Factory\CompanyTableFactory',
 		),	
 	),
 		

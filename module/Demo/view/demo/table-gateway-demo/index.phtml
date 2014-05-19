@@ -1,0 +1,140 @@
+<h1>TableGateway</h1>
+
+<h2><span class="label label-success">Cas 1 : listing ordonné par nom croissant</span></h2>
+<h2><span class="label label-warning">Renommer /config/autoload/db.local.php.dist sans l'extension .dist et éditer avec les bons paramètres</span></h2>
+<h2><span class="label label-warning">Ne pas oublier de créer la table pour tester !</span></h2>
+<h2><span class="label label-info">Le code SQL pour la table de test est /module/Demo/data/zf2demo.mysql.sql</span></h2>
+<br />
+<div class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<?php foreach ($companies as $company): ?>
+				<tr>
+					<td>#<?php echo $company['id'] ?></td>
+					<td><?php echo $company['name'] ?></td>
+				</tr>
+			<?php endforeach ?>
+		</tbody>
+	
+	</table>
+</div>
+
+<hr />
+
+<h2>La classe CompanyTable avec le DbAdapter injecté par factory</h2>
+<p>
+<?php 
+	$companyTable1 = <<<'COMPANY_TABLE1'
+<?php
+
+namespace Demo\Model;
+
+use Zend\Db\Adapter\Adapter as DbAdapter;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+
+class CompanyTable
+{
+	protected $tableGateway;
+	const TABLE_NAME = 'company';
+	
+	public function __construct(DbAdapter $dbAdapter)
+	{
+		$this->tableGateway = new TableGateway(self::TABLE_NAME, $dbAdapter);
+	}
+	
+	public function findAllOrderedByName()
+	{
+		$select = new Select;
+		$select->from(self::TABLE_NAME)
+			->order('NAME ASC');
+		
+		return $this->tableGateway->selectWith($select)->toArray();
+	}
+}
+COMPANY_TABLE1;
+
+	highlight_string($companyTable1);
+?>
+</p>
+
+<hr />
+
+<h2>Config pour le DbAdapter</h2>
+<?php 
+	$dbAdapterConfig = <<<'DB_ADAPTER_CONFIG'
+// /config/autoload/db.local.php
+return array(
+	'db' => array(
+		'driver' => 'Pdo_Mysql',
+        'dsn' => 'mysql:dbname=zf2demo;host=127.0.0.1',
+		'username' => 'zf2demo',
+		'password' => 'zf2demo',
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ),
+	),
+		
+    'service_manager' => array(
+		'factories' => array(
+    		'db-adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+    	),
+	),
+);
+DB_ADAPTER_CONFIG;
+
+	highlight_string($dbAdapterConfig);
+?>
+
+<hr />
+<h2><span class="label label-success">Cas 2 : Insertion de données</span></h2>
+<h2><span class="label label-info">Pour simplifier l'exemple on récupère le nom de la société à créer par GET</span></h2>
+<br />
+<ul>
+	<li><a href="<?php echo $this->url('demo/tablegateway-insert-company', array('name' => 'TOTAL')) ?>">Ajouter la société TOTAL</a></li>
+	<li><a href="<?php echo $this->url('demo/tablegateway-insert-company', array('name' => 'SNCF')) ?>">Ajouter la société SNCF</a></li>
+	<li><a href="<?php echo $this->url('demo/tablegateway-insert-company', array('name' => 'Renault')) ?>">Ajouter la société Renault</a></li>
+</ul>
+
+<hr />
+
+<h2>Action du controller</h2>
+<?php 
+	$addCompanyAction = <<<'ADD_COMPANY_ACTION'
+	public function insertCompanyAction()
+	{ 
+		$company = array('name' => $this->params('name'));
+		
+		$this->companyTable->insert($company);
+		
+		return $this->redirect()->toRoute('demo/tablegateway');
+	}
+ADD_COMPANY_ACTION;
+	highlight_string($addCompanyAction);
+?>
+
+<hr />
+
+<h2>Méthode insert() à rajouter dans CompanyTable</h2>
+<h2><span class="label label-info">On réutilise la méthode insert() prédéfinie dans TableGateway</span></h2>
+<br />
+<p>
+<?php 
+	$companyTable2 = <<<'COMPANY_TABLE2'
+	public function insert(array $data)
+	{
+		$this->tableGateway->insert($data);
+	}
+COMPANY_TABLE2;
+
+	highlight_string($companyTable2);
+?>
+</p>
