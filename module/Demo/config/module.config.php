@@ -113,6 +113,7 @@ return array(
 		'factories' => array(
 			'demo-form' => 'Demo\Factory\DemoFormFactory',
 			'company-table' => 'Demo\Factory\CompanyTableFactory',
+			'company-table2' => 'Demo\Factory\CompanyTable2Factory',
 		),	
 	),
 		
