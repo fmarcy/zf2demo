@@ -81,6 +81,16 @@ return array(
 							),
 						),
 					),
+					'ffmpeg' => array(
+						'type' => 'Segment',
+						'options' => array(
+							'route' => '/ffmpeg',
+							'defaults' => array(
+								'controller' => 'demo-ffmpeg-controller',
+								'action' => 'index',
+							),
+						),
+					),
 					'doc' => array(
 						'type' => 'Literal',
 						'options' => array(
@@ -103,6 +113,7 @@ return array(
 		'factories' => array(
 			'demo-post-demo1-controller' =>'Demo\Factory\PostDemo1ControllerFactory',
 			'demo-tablegateway-controller' => 'Demo\Factory\TableGatewayDemoControllerFactory',
+			'demo-ffmpeg-controller' => 'Demo\Factory\FfmpegControllerFactory',
 		),			
 	),
 		
